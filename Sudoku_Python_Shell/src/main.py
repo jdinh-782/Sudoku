@@ -19,12 +19,14 @@ def main ( ):
     args = sys.argv
 
     # Important Variables
-    file   = "";
+    file   = "sample_board.TXT";
     var_sh = "";
     val_sh = "";
-    cc     = "";
+    cc     = "norvigCheck";
 
     for arg in [args[i] for i in range(1, len(args))]:
+        print(f"arg: {arg}")
+
         if arg == "MRV":
             var_sh = "MinimumRemainingValue"
 
@@ -50,21 +52,31 @@ def main ( ):
 
     trail = Trail.Trail();
 
+    # if no file is specified
     if file == "":
         sudokudata = SudokuBoard.SudokuBoard( 3, 3, 7 )
         print(sudokudata)
 
         solver = BTSolver.BTSolver( sudokudata, trail, val_sh, var_sh, cc )
+
+        # checks if cc is defined
         if cc in ["forwardChecking","norvigCheck","tournCC"]:
             solver.checkConsistency()
+
+        # where the actual solving occurs
         solver.solve()
 
         if solver.hassolution:
+            print("solution!")
             print( solver.getSolution() )
             print( "Trail Pushes: " + str(trail.getPushCount()) )
             print( "Backtracks: " + str(trail.getUndoCount()) )
 
         else:
+            print("Trail Pushes: " + str(trail.getPushCount()))
+            print("Backtracks: " + str(trail.getUndoCount()))
+
+            print(sudokudata)
             print( "Failed to find a solution" )
 
         return
@@ -85,7 +97,7 @@ def main ( ):
 
             solver = BTSolver.BTSolver( sudokudata, trail, val_sh, var_sh, cc )
             if cc in ["forwardChecking","norvigCheck","tournCC"]:
-                solver.checkConsistency()
+                solver.checkConsistency() # this is where solver checks for heuristics and checking techniques
             solver.solve()
 
             if solver.hassolution:
@@ -113,4 +125,7 @@ def main ( ):
     else:
         print( "Failed to find a solution" )
 
+start_time = time.time()
 main()
+print(f"algorithm took {time.time() - start_time} seconds")
+

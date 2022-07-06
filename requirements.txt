@@ -1,0 +1,10 @@
+###### Requirements without Version Specifiers ######
+scikit-learn
+time
+random
+pprint
+math
+itertools
+copy
+sys
+os
